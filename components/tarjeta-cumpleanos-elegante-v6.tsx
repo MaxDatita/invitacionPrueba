@@ -388,53 +388,23 @@ export function TarjetaCumpleanosEleganteV6() {
                   </div>
                 ) : (
                   <div className="mx-6">
-                    <div className="bg-white rounded-lg p-3 sm:p-4 shadow-lg overflow-hidden relative">
-                      <style jsx>{`
-                        .glow-line {
-                          position: absolute;
-                          width: 50%;
-                          height: 50%;
-                          background: linear-gradient(90deg, 
-                            transparent, 
-                            rgba(255, 182, 193, 0.2), 
-                            transparent
-                          );
-                          animation: movingGlow 3s linear infinite;
-                        }
-
-                        @keyframes movingGlow {
-                          0% {
-                            transform: translateX(-200%) translateY(-200%) rotate(45deg);
-                          }
-                          100% {
-                            transform: translateX(200%) translateY(200%) rotate(45deg);
-                          }
-                        }
-
-                        @media (max-width: 640px) {
-                          .glow-line {
-                            width: 30%;
-                            height: 30%;
-                          }
-                        }
-                      `}</style>
-                      <div className="glow-line" />
-                      <div className="flex justify-center space-x-4">
+                    <div className="bg-white rounded-lg p-4 shadow-lg">
+                      <div className="flex justify-center space-x-6">
                         <div className="text-center">
-                          <span className="font-semibold text-xl block">{timeLeft.days}</span>
-                          <span className="text-gray-600">Días</span>
+                          <span className="font-bold text-2xl sm:text-3xl block">{timeLeft.days}</span>
+                          <span className="text-gray-600 text-sm">Días</span>
                         </div>
                         <div className="text-center">
-                          <span className="font-semibold text-xl block">{timeLeft.hours}</span>
-                          <span className="text-gray-600">Horas</span>
+                          <span className="font-bold text-2xl sm:text-3xl block">{timeLeft.hours}</span>
+                          <span className="text-gray-600 text-sm">Horas</span>
                         </div>
                         <div className="text-center">
-                          <span className="font-semibold text-xl block">{timeLeft.minutes}</span>
-                          <span className="text-gray-600">Min</span>
+                          <span className="font-bold text-2xl sm:text-3xl block">{timeLeft.minutes}</span>
+                          <span className="text-gray-600 text-sm">Min</span>
                         </div>
                         <div className="text-center">
-                          <span className="font-semibold text-xl block">{timeLeft.seconds}</span>
-                          <span className="text-gray-600">Seg</span>
+                          <span className="font-bold text-2xl sm:text-3xl block">{timeLeft.seconds}</span>
+                          <span className="text-gray-600 text-sm">Seg</span>
                         </div>
                       </div>
                     </div>
