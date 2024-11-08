@@ -388,7 +388,36 @@ export function TarjetaCumpleanosEleganteV6() {
                   </div>
                 ) : (
                   <div className="mx-6">
-                    <div className="bg-white rounded-lg p-4 shadow-lg overflow-hidden relative">
+                    <div className="bg-white rounded-lg p-3 sm:p-4 shadow-lg overflow-hidden relative">
+                      <style jsx>{`
+                        .glow-line {
+                          position: absolute;
+                          width: 50%;
+                          height: 50%;
+                          background: linear-gradient(90deg, 
+                            transparent, 
+                            rgba(255, 182, 193, 0.2), 
+                            transparent
+                          );
+                          animation: movingGlow 3s linear infinite;
+                        }
+
+                        @keyframes movingGlow {
+                          0% {
+                            transform: translateX(-200%) translateY(-200%) rotate(45deg);
+                          }
+                          100% {
+                            transform: translateX(200%) translateY(200%) rotate(45deg);
+                          }
+                        }
+
+                        @media (max-width: 640px) {
+                          .glow-line {
+                            width: 30%;
+                            height: 30%;
+                          }
+                        }
+                      `}</style>
                       <div className="glow-line" />
                       <div className="flex justify-center space-x-4">
                         <div className="text-center">
