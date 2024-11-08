@@ -1,14 +1,11 @@
-interface MensajeProps {
-  nombre: string;
+interface MensajeFlotanteProps {
   mensaje: string;
-  onClick?: () => void;
-  placeholder?: boolean;
+  nombre: string;
 }
 
-export function MensajeFlotante({ nombre, mensaje, onClick, placeholder = false }: MensajeProps) {
+export function MensajeFlotante({ mensaje, nombre }: MensajeFlotanteProps) {
   return (
     <div 
-      onClick={onClick}
       className={`
         flex-shrink-0 w-80 bg-white/10 backdrop-blur-sm rounded-xl p-6 
         cursor-pointer transition-all duration-300 
