@@ -62,8 +62,8 @@ export function TarjetaCumpleanosEleganteV6() {
     }
   ]
 
-  const eventDate = useMemo(() => new Date('2024-12-21T21:00:00'), []) // Fecha del evento
-  const scheduleVisibleDate = useMemo(() => new Date('2024-12-29T00:00:00'), []) // Fecha de visibilidad del cronograma y contenido
+  const eventDate = useMemo(() => new Date('2024-10-21T21:00:00'), []) // Fecha del evento
+  const scheduleVisibleDate = useMemo(() => new Date('2024-10-29T00:00:00'), []) // Fecha de visibilidad del cronograma y contenido
   const rsvpDeadline = useMemo(() => new Date('2024-11-28T23:59:59'), []) // Fecha límite de confirmación de asistencia
 
   const [isRsvpEnabled, setIsRsvpEnabled] = useState(true)
