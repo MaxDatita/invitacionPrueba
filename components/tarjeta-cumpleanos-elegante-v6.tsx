@@ -296,6 +296,9 @@ export function TarjetaCumpleanosEleganteV6() {
               muted 
               playsInline
               className="absolute inset-0 w-full h-full object-cover mix-blend-overlay"
+              preload="auto"
+              width="720"
+              height="405"
             >
               <source src="/vid1.mp4" type="video/mp4" />
             </video>
@@ -335,6 +338,8 @@ export function TarjetaCumpleanosEleganteV6() {
                   src={images[currentImageIndex].src} 
                   alt={images[currentImageIndex].alt}
                   fill
+                  placeholder="blur"
+                  blurDataURL={`data:image/svg+xml;base64,...`}
                   className={`
                     object-cover
                     transition-opacity duration-1000 ease-in-out
@@ -344,7 +349,7 @@ export function TarjetaCumpleanosEleganteV6() {
                         (max-width: 768px) 75vw,
                         (max-width: 1024px) 50vw,
                         400px"
-                  priority
+                  priority={currentImageIndex === 0}
                 />
               </div>
             </div>
