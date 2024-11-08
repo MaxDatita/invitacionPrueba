@@ -23,7 +23,11 @@ function getGradientByIndex(index: number) {
   return colors[index % colors.length];
 }
 
-export function MensajesMarquee({ mensajes, onMensajeClick }: MensajesMarqueeProps) {
+export function MensajesMarquee({ mensajes, onMensajeClick, isLoading }: MensajesMarqueeProps) {
+  if (isLoading) {
+    return <div className="text-center text-gray-300 py-4">Cargando mensajes...</div>;
+  }
+
   const tarjetas = mensajes.length > 0 ? mensajes : [{
     id: 'placeholder-1',
     nombre: "Invitado",

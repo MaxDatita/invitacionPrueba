@@ -371,7 +371,11 @@ export function TarjetaCumpleanosEleganteV6() {
                     <div className="max-w mx-auto">
                       {mensajes.length > 0 ? (
                         <MensajesMarquee 
-                          mensajes={mensajes}
+                          mensajes={mensajes.map(m => ({
+                            id: m.id,
+                            nombre: m.nombre,
+                            mensaje: m.mensaje
+                          }))}
                           onMensajeClick={(mensaje) => setMensajeSeleccionado(mensaje)}
                           isLoading={isLoadingMensajes}
                         />
