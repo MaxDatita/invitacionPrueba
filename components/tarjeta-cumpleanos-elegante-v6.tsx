@@ -9,6 +9,7 @@ import Image from 'next/image'
 import { Dancing_Script } from 'next/font/google'
 import { MensajesMarquee } from './ui/mensajes-marquee'
 
+
 // Inicializa la fuente
 const dancingScript = Dancing_Script({ subsets: ['latin'] })
 
@@ -27,6 +28,12 @@ interface RSVPData {
   notas: string;
 }
 
+interface MensajeResponse {
+  fecha: string;
+  nombre: string;
+  mensaje: string;
+}
+
 export function TarjetaCumpleanosEleganteV6() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [timeLeft, setTimeLeft] = useState({days: 0, hours: 0, minutes: 0, seconds: 0})
@@ -38,7 +45,7 @@ export function TarjetaCumpleanosEleganteV6() {
   const [mensaje, setMensaje] = useState('')
   const [nombre, setNombre] = useState('')
   const [mensajes, setMensajes] = useState<Mensaje[]>([])
-  const [isLoadingMensajes,] = useState(true)
+  const [isLoadingMensajes, setIsLoadingMensajes] = useState(true)
   const [mensajeSeleccionado, setMensajeSeleccionado] = useState<{nombre: string, mensaje: string} | null>(null)
   const [showRSVPModal, setShowRSVPModal] = useState(false);
   const [rsvpData, setRsvpData] = useState<RSVPData>({
@@ -50,15 +57,18 @@ export function TarjetaCumpleanosEleganteV6() {
   const images = [
     {
       src: "/img1.webp",
-      alt: "María sonriendo en su jardín"
+      alt: "María sonriendo en su jardín",
+      blurDataURL: "data:image/jpeg;base64,/9j..."
     },
     {
       src: "/img2.webp", 
-      alt: "María celebrando con amigos"
+      alt: "María celebrando con amigos",
+      blurDataURL: "data:image/jpeg;base64,/9j..."
     },
     {
       src: "/img3.webp",
-      alt: "María en su graduación"
+      alt: "María en su graduación",
+      blurDataURL: "data:image/jpeg;base64,/9j..."
     }
   ]
 
@@ -106,11 +116,16 @@ export function TarjetaCumpleanosEleganteV6() {
     const canvas = canvasRef.current
     if (!canvas) return
 
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    canvas.width = canvas.offsetWidth
-    canvas.height = canvas.offsetHeight
+    ctx.scale(dpr, dpr);
 
     const dotSize = 8 // Tamaño de cada punto
     const spacing = 10 // Espacio entre puntos
@@ -241,11 +256,12 @@ export function TarjetaCumpleanosEleganteV6() {
         });
 
         if (response.ok) {
-          const nuevoMensaje = await response.json();
-          setMensajes(prev => [...prev, nuevoMensaje]);
+          await fetchMensajes();
           setNombre('');
           setMensaje('');
-          setMensajesDialogOpen(false); // Cerrar el modal
+          setMensajesDialogOpen(false);
+        } else {
+          throw new Error('Error al enviar mensaje');
         }
       } catch (error) {
         console.error('Error al enviar mensaje:', error);
@@ -255,25 +271,44 @@ export function TarjetaCumpleanosEleganteV6() {
 
   const fetchMensajes = async () => {
     try {
+      setIsLoadingMensajes(true);
+      console.log('Iniciando fetch de mensajes');
+      
       const response = await fetch('/api/mensajes');
-      if (response.ok) {
-        const data = await response.json();
-        setMensajes(data);
+      console.log('Response status:', response.status);
+      
+      if (!response.ok) {
+        throw new Error(`Error al cargar mensajes: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('Datos recibidos:', data);
+      
+      if (data.mensajes && Array.isArray(data.mensajes)) {
+        const mensajesProcesados = data.mensajes
+          .map((m: MensajeResponse, index: number) => ({
+            id: index.toString(),
+            nombre: m.nombre || '',
+            mensaje: m.mensaje || ''
+          }))
+          .filter((m: Mensaje) => Boolean(m.nombre) && Boolean(m.mensaje));
+        
+        console.log('Mensajes procesados:', mensajesProcesados);
+        setMensajes(mensajesProcesados);
+      } else {
+        console.log('No hay mensajes o formato inválido');
+        setMensajes([]);
       }
     } catch (error) {
-      console.error('Error al cargar mensajes:', error);
+      console.error('Error detallado:', error);
+      setMensajes([]);
+    } finally {
+      setIsLoadingMensajes(false);
     }
   };
 
   useEffect(() => {
-    // Carga inicial de mensajes
     fetchMensajes();
-
-    // Configurar el intervalo de actualización (15 minutos = 900000 ms)
-    const intervalId = setInterval(fetchMensajes, 900000);
-
-    // Limpiar el intervalo cuando el componente se desmonte
-    return () => clearInterval(intervalId);
   }, []);
 
   return (
@@ -339,7 +374,7 @@ export function TarjetaCumpleanosEleganteV6() {
                   alt={images[currentImageIndex].alt}
                   fill
                   placeholder="blur"
-                  blurDataURL={`data:image/svg+xml;base64,...`}
+                  blurDataURL={images[currentImageIndex].blurDataURL}
                   className={`
                     object-cover
                     transition-opacity duration-1000 ease-in-out
@@ -518,6 +553,7 @@ export function TarjetaCumpleanosEleganteV6() {
                         <li>4:00 PM - Juegos y actividades</li>
                         <li>5:00 PM - Pastel y canción de cumpleaños</li>
                         <li>5:30 PM - Baile y música</li>
+                        <li>7:00 PM - Cierre del evento</li>
                         <li>7:00 PM - Cierre del evento</li>
                         <li>7:00 PM - Cierre del evento</li>
                         <li>7:00 PM - Cierre del evento</li>
